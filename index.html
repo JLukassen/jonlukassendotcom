@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jon Lukassen — Site Reliability Engineer</title>
+<meta name="description" content="Jon Lukassen — Site Reliability Engineer / DevOps. Infrastructure automation, monitoring, and industrial computer vision projects.">
+<meta property="og:title" content="Jon Lukassen — Site Reliability Engineer">
+<meta property="og:description" content="Infrastructure automation, monitoring, and industrial computer vision.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jonlukassen.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14181d;
+    --panel:#1b2129;
+    --panel-edge:#2a323d;
+    --ink:#e9e5da;
+    --ink-dim:#9aa5b1;
+    --steel:#7c8a99;
+    --amber:#e8a33d;
+    --amber-dim:rgba(232,163,61,.14);
+    --ok:#5cb878;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --sans:'IBM Plex Sans',system-ui,sans-serif;
+    --display:'Archivo',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--amber);text-decoration:none}
+  a:hover{text-decoration:underline}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px}
+
+  /* ---------- top status bar ---------- */
+  .statusbar{
+    font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+    border-bottom:1px solid var(--panel-edge);
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px 24px;color:var(--ink-dim);
+    position:sticky;top:0;background:rgba(20,24,29,.92);backdrop-filter:blur(6px);z-index:10;
+  }
+  .statusbar .sys{display:flex;align-items:center;gap:8px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px rgba(92,184,120,.7)}
+  @media (prefers-reduced-motion: no-preference){
+    .dot{animation:pulse 2.4s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  }
+  .statusbar nav{display:flex;gap:20px}
+  .statusbar nav a{color:var(--ink-dim)}
+  .statusbar nav a:hover{color:var(--amber);text-decoration:none}
+
+  /* ---------- hero / annunciator panel ---------- */
+  header.hero{padding:88px 0 64px}
+  .eyebrow{
+    font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:18px;
+  }
+  h1{
+    font-family:var(--display);font-weight:800;
+    font-size:clamp(44px,7.5vw,76px);
+    line-height:1.02;letter-spacing:-.02em;
+    margin-bottom:20px;
+  }
+  .hero p.lede{max-width:56ch;color:var(--ink-dim);font-size:19px;margin-bottom:40px}
+  .hero p.lede strong{color:var(--ink);font-weight:600}
+
+  .annunciator{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--panel-edge);border:1px solid var(--panel-edge);border-radius:8px;overflow:hidden;
+  }
+  .annunciator .cell{background:var(--panel);padding:16px 18px}
+  .cell .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);margin-bottom:6px}
+  .cell .v{font-family:var(--mono);font-size:14px;color:var(--ink)}
+  .cell .v .ok{color:var(--ok)}
+  @media(max-width:640px){.annunciator{grid-template-columns:1fr 1fr}.annunciator .cell:last-child{grid-column:1/-1}}
+
+  /* ---------- sections ---------- */
+  section{padding:64px 0;border-top:1px solid var(--panel-edge)}
+  h2{
+    font-family:var(--display);font-weight:700;font-size:15px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--steel);
+    margin-bottom:36px;display:flex;align-items:center;gap:14px;
+  }
+  h2::after{content:"";flex:1;height:1px;background:var(--panel-edge)}
+
+  /* ---------- projects ---------- */
+  .projects{display:grid;gap:20px}
+  .project{
+    background:var(--panel);border:1px solid var(--panel-edge);border-radius:10px;
+    padding:28px;transition:border-color .2s ease;
+  }
+  .project:hover{border-color:var(--amber)}
+  .project .tag{
+    display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--amber);background:var(--amber-dim);border-radius:4px;padding:3px 8px;margin-bottom:14px;
+  }
+  .project h3{font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.01em;margin-bottom:10px}
+  .project p{color:var(--ink-dim);margin-bottom:14px;max-width:64ch}
+  .project .stack{font-family:var(--mono);font-size:12px;color:var(--steel)}
+  .project .links{margin-top:14px;font-family:var(--mono);font-size:13px;display:flex;gap:18px}
+
+  /* ---------- experience timeline ---------- */
+  .job{
+    display:grid;grid-template-columns:170px 1fr;gap:28px;
+    padding:26px 0;border-bottom:1px solid var(--panel-edge);
+  }
+  .job:last-child{border-bottom:none}
+  .job .when{font-family:var(--mono);font-size:13px;color:var(--steel);padding-top:4px}
+  .job h3{font-family:var(--display);font-weight:700;font-size:19px;margin-bottom:2px}
+  .job .org{font-family:var(--mono);font-size:13px;color:var(--amber);margin-bottom:10px}
+  .job ul{list-style:none;color:var(--ink-dim)}
+  .job li{padding-left:18px;position:relative;margin-bottom:6px}
+  .job li::before{content:"›";position:absolute;left:0;color:var(--steel)}
+  @media(max-width:640px){.job{grid-template-columns:1fr;gap:6px}}
+
+  /* ---------- skills ---------- */
+  .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+  .skillgroup{background:var(--panel);border:1px solid var(--panel-edge);border-radius:10px;padding:22px}
+  .skillgroup .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+  .skillgroup ul{list-style:none;color:var(--ink-dim);font-size:15px}
+  .skillgroup li{margin-bottom:5px}
+
+  /* ---------- contact ---------- */
+  .contact{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  .btn{
+    font-family:var(--mono);font-size:14px;letter-spacing:.04em;
+    border:1px solid var(--amber);color:var(--amber);border-radius:6px;
+    padding:12px 22px;display:inline-block;transition:background .2s,color .2s;
+  }
+  .btn:hover{background:var(--amber);color:var(--bg);text-decoration:none}
+  .btn.ghost{border-color:var(--panel-edge);color:var(--ink-dim)}
+  .btn.ghost:hover{background:var(--panel);color:var(--ink)}
+
+  footer{
+    border-top:1px solid var(--panel-edge);
+    padding:28px 0 40px;font-family:var(--mono);font-size:12px;color:var(--steel);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+
+  /* ---------- load-in ---------- */
+  @media (prefers-reduced-motion: no-preference){
+    .fade{opacity:0;transform:translateY(10px);animation:rise .6s ease forwards}
+    .fade.d1{animation-delay:.08s}.fade.d2{animation-delay:.16s}.fade.d3{animation-delay:.26s}
+    @keyframes rise{to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+
+<div class="statusbar">
+  <div class="sys"><span class="dot" aria-hidden="true"></span>JONLUKASSEN.COM &nbsp;·&nbsp; ALL SYSTEMS OPERATIONAL</div>
+  <nav>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow fade">Site Reliability · DevOps · Automation</p>
+  <h1 class="fade d1">Jon Lukassen</h1>
+  <p class="lede fade d2">I keep infrastructure boring — in the good way. <strong>SRE/DevOps engineer</strong> automating systems with Python, Ansible, and Bash by day; building <strong>industrial computer-vision and Arduino automation</strong> tools the rest of the time.</p>
+  <div class="annunciator fade d3" role="list">
+    <div class="cell" role="listitem"><div class="k">Status</div><div class="v"><span class="ok">●</span> Open to opportunities</div></div>
+    <div class="cell" role="listitem"><div class="k">Current role</div><div class="v">SRE / DevOps · 2023–present</div></div>
+    <div class="cell" role="listitem"><div class="k">Base</div><div class="v">Houston, TX</div></div>
+  </div>
+</header>
+
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="projects">
+
+    <article class="project">
+      <span class="tag">Computer Vision</span>
+      <h3>tube-counter</h3>
+      <p>A Python application that counts heat-exchanger tubes from field photos and generates machine recipes automatically. Detects tube openings with OpenCV, achieves ~95% recall across an archive of human-verified jobs, and flags low-confidence results so technicians can correct them in the loop.</p>
+      <div class="stack">Python · OpenCV · Flask · GitHub Actions CI</div>
+      <div class="links"><a href="https://github.com/YOUR_GITHUB/tube-counter">→ GitHub</a></div>
+    </article>
+
+    <article class="project">
+      <span class="tag">Hardware Automation</span>
+      <h3>Automated tube-cleaning machine</h3>
+      <p>Arduino-based control system for an automated heat-exchanger tube-cleaning rig. Executes recipes generated by tube-counter, with serial logging and diagnostics for troubleshooting runs in the field.</p>
+      <div class="stack">Arduino · C++ · Serial diagnostics · Python tooling</div>
+    </article>
+
+    <article class="project">
+      <span class="tag">Infrastructure</span>
+      <h3>Remote tooling server</h3>
+      <p>Self-hosted Flask services on Windows with reliable boot-time startup, reachable from anywhere over a Tailscale mesh VPN — no ports exposed to the public internet.</p>
+      <div class="stack">Flask · Windows services · Tailscale</div>
+    </article>
+
+  </div>
+</section>
+
+<section id="experience">
+  <h2>Experience</h2>
+
+  <div class="job">
+    <div class="when">Jul 2023 — Present</div>
+    <div>
+      <h3>Site Reliability Engineer / DevOps</h3>
+      <ul>
+        <li>Implemented network infrastructure on ESXi-hosted Windows and Linux server images</li>
+        <li>Automated system administration and monitoring with Bash, PowerShell, Ansible, and Python</li>
+        <li>Resolved escalated tickets and events across internally hosted infrastructure, products, and databases</li>
+        <li>Ran vulnerability assessments with Tenable, Sophos, and Carbon Black, and implemented remediations</li>
+        <li>Wrote documentation standardizing system configuration and troubleshooting across teams</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="when">Nov 2020 — Apr 2022</div>
+    <div>
+      <h3>Cloud Support Engineer</h3>
+      <ul>
+        <li>Managed Linux and Windows server infrastructure for hosted and on-premise clients</li>
+        <li>Automated system checks and maintenance with Bash scripting</li>
+        <li>Diagnosed application and infrastructure issues using Datadog, Sumo Logic, and SQL Server</li>
+        <li>Founded a biweekly T2 case-review program for new hires — later adopted for all new team hires</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="when">Jun 2019 — Oct 2020</div>
+    <div>
+      <h3>Assistant Manager &amp; Web Developer</h3>
+      <div class="org">Mount Juliet Café</div>
+      <ul>
+        <li>Built and maintained mountjulietcafe.com and related applications (JavaScript, CSS, HTML5)</li>
+        <li>Diagnosed and resolved website, server, and third-party integration issues</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="job">
+    <div class="when">Oct 2017 — Oct 2018</div>
+    <div>
+      <h3>Application Support</h3>
+      <div class="org">Wells Fargo</div>
+      <ul>
+        <li>Remote application, hardware, and network support for 300,000 users</li>
+        <li>97% first-call resolution — 7 points above team goal</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <div class="skills">
+    <div class="skillgroup">
+      <div class="k">Automation</div>
+      <ul><li>Python</li><li>Bash / PowerShell</li><li>Ansible</li><li>GitHub Actions</li></ul>
+    </div>
+    <div class="skillgroup">
+      <div class="k">Infrastructure</div>
+      <ul><li>Linux / Windows Server</li><li>ESXi / VMware</li><li>Tailscale / networking</li><li>SQL Server</li></ul>
+    </div>
+    <div class="skillgroup">
+      <div class="k">Observability &amp; Security</div>
+      <ul><li>Datadog / Sumo Logic</li><li>Tenable / Sophos</li><li>Carbon Black</li></ul>
+    </div>
+    <div class="skillgroup">
+      <div class="k">ML &amp; Vision</div>
+      <ul><li>OpenCV</li><li>YOLO / Edge Impulse</li><li>Arduino / embedded</li></ul>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="contact">
+    <a class="btn" href="mailto:you@jonlukassen.com">Email me</a>
+    <a class="btn ghost" href="https://github.com/YOUR_GITHUB">GitHub</a>
+    <a class="btn ghost" href="https://linkedin.com/in/YOUR_LINKEDIN">LinkedIn</a>
+    <a class="btn ghost" href="/resume.pdf">Résumé (PDF)</a>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:0 24px;width:100%;max-width:920px;margin:0 auto">
+    <span>© 2026 Jon Lukassen</span>
+    <span>STATIC · NO SERVER · TLS BY HOST</span>
+  </div>
+</footer>
+
+</body>
+</html>
